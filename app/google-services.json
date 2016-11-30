@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "804975899909",
+    "firebase_url": "https://bg-stage.firebaseio.com",
+    "project_id": "firebase-bg-stage",
+    "storage_bucket": "firebase-bg-stage.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:804975899909:android:d54514f1ba2a6e0b",
+        "android_client_info": {
+          "package_name": "com.example.mike.firebaseexample"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "804975899909-lvvo8g1ujm5e2i4n8f4p8am2lt17gkaf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCw_wAvNZMzPvqeBGraSX2o6_gBRi8SEgA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
