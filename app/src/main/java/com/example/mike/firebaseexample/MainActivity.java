@@ -17,6 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import android.util.Log;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,10 +37,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-
         buttonSave = (Button) findViewById(R.id.buttonSave);
-        editTextName = (EditText) findViewById(R.id.editTextName);
-        editTextAddress = (EditText) findViewById(R.id.editTextAddress);
+//        editTextName = (EditText) findViewById(R.id.editTextName);
+//        editTextAddress = (EditText) findViewById(R.id.editTextAddress);
 
         textViewPersons = (TextView) findViewById(R.id.textViewPersons);
 
@@ -73,7 +73,9 @@ public class MainActivity extends AppCompatActivity {
                             Person person = postSnapshot.getValue(Person.class);
 
                             //Adding it to a string
-                            String string = "Name: "+person.getfirstName()+"\nAddress: "+person.getEmail()+"\n\n";
+                            String string = "\nName: " + person.getfirstName() + "\n\nAddress: " + person.getEmail() + "\n\nUID: " + person.getUid() +
+                                    "\n\nAbout me: " + person.getAbout() + "\n\nOneSignalID: " + person.getOneSignalID() + "\n\nPrivacy Agreement: "
+                                    + person.getPrivacyAgreement() +"\n";
 
                             //Displaying it on textview
                             textViewPersons.setText(string);

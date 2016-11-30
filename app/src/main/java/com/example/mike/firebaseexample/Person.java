@@ -10,6 +10,9 @@ public class Person {
     private String address;
     private String uid;
     private String email;
+    private String about;
+    private String oneSignalID;
+    private Boolean privacyAgreement;
 
     public Person() {
       /*Blank default constructor essential for Firebase*/
@@ -39,11 +42,27 @@ public class Person {
         this.uid = uid;
     }
 
-    public String getEmail() {
-        return email;
-    }
+    public String getEmail() { return email;}
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getAbout() { return about; }
+
+    public void setAbout(String about) {
+        this.about = about;
+    }
+
+    public String getOneSignalID() { return oneSignalID; }
+
+    public void setOneSignalID(String oneSignalID) {
+        this.oneSignalID = oneSignalID;
+    }
+
+    public Boolean getPrivacyAgreement() { return privacyAgreement; }
+
+    public void setPrivacyAgreement(Boolean privacyAgreement) {
+        this.privacyAgreement = privacyAgreement;
     }
 }
