@@ -23,6 +23,8 @@ import com.google.firebase.database.ValueEventListener;
 import android.util.Log;
 import android.widget.Toast;
 
+import static com.example.mike.firebaseexample.R.id.editTextAddress;
+
 /**
  * Created by mike on 30.11.2016.
  */
@@ -31,6 +33,8 @@ public class SignupActivity extends BaseActivity  {
 
     private EditText editTextName;
     private EditText editTextEmail;
+    private EditText editTextPassword;
+
     private Button buttonSave;
     private Button buttonSignin;
 
@@ -46,6 +50,8 @@ public class SignupActivity extends BaseActivity  {
 
         editTextName = (EditText) findViewById(R.id.editTextName);
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
+        editTextPassword = (EditText) findViewById(R.id.editTextPassword);
+
         buttonSave = (Button) findViewById(R.id.buttonSave);
         buttonSignin = (Button) findViewById(R.id.sign_in_button);
 
@@ -69,7 +75,11 @@ public class SignupActivity extends BaseActivity  {
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createUser("dupa1@dupa.pl", "password");
+
+                String email = editTextEmail.getText().toString().trim();
+                String password = editTextPassword.getText().toString().trim();
+
+                createUser(email, password);
             }
         });
 
