@@ -91,7 +91,6 @@ public class SignupActivity extends BaseActivity  {
         });
     }
 
-
     private void createUser(String email, String password) {
         // [START create_user_with_email]
         showProgressDialog();
