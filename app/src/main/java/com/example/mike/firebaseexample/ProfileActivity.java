@@ -27,13 +27,18 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        buttonSave = (Button) findViewById(R.id.buttonSave);
+        buttonSave = (Button) findViewById(R.id.sign_in_button);
 
         textViewPersons = (TextView) findViewById(R.id.textViewPersons);
 
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                onBackPressed();
+
+            }
+        });
 
                 //Value event listener for realtime data update
                 ref.addValueEventListener(new ValueEventListener() {
@@ -61,8 +66,7 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                 });
 
-            }
-        });
+
     }
 
 

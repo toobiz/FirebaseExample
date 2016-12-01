@@ -12,56 +12,16 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.mike.firebaseexample.ProfileActivity">
 
-    <ImageView
-        android:layout_width="240dp"
-        android:layout_height="128dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="30dp"
-        android:src="@mipmap/ic_logo" />
-
-    <TextView
-        android:text="Email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <EditText
-        android:id="@+id/editTextName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-
-    <TextView
-        android:text="Password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <EditText
-        android:id="@+id/editTextAddress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:id="@+id/buttonSave"
-        android:text="REGISTER"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
     <Button
         android:id="@+id/sign_in_button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dip"
         android:background="@null"
-        android:text="Back to login screen"
+        android:text="Logout"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="15dp" />
-
-    <TextView
-        android:text="Personal details"
-        android:textStyle="bold"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/textViewPersons"

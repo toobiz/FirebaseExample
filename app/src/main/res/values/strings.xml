@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">FirebaseExample</string>
+    <string name="app_name">Board Gamer</string>
+    <string name="signup">Sign Up</string>
 </resources>
