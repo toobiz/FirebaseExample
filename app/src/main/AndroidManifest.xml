@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SigninActivity">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -21,6 +21,10 @@
         <activity
             android:name=".SignupActivity"
             android:label="Sign in" >
+        </activity>
+        <activity
+            android:name=".PasswordActivity"
+            android:label="Password" >
         </activity>
     </application>
 

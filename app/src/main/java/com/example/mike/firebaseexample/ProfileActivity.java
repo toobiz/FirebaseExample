@@ -1,5 +1,6 @@
 package com.example.mike.firebaseexample;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -17,7 +18,7 @@ import android.util.Log;
 public class ProfileActivity extends AppCompatActivity {
 
     private TextView textViewPersons;
-    private Button buttonSave;
+    private Button buttonLogout;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference ref = database.getReference("users");
@@ -27,16 +28,16 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        buttonSave = (Button) findViewById(R.id.sign_in_button);
+        buttonLogout = (Button) findViewById(R.id.logout_button);
 
         textViewPersons = (TextView) findViewById(R.id.textViewPersons);
 
-        buttonSave.setOnClickListener(new View.OnClickListener() {
+        buttonLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                onBackPressed();
-
+                Intent loginIntent = new Intent(ProfileActivity.this, LoginActivity.class);
+                startActivity(loginIntent);
             }
         });
 
@@ -65,9 +66,5 @@ public class ProfileActivity extends AppCompatActivity {
                         System.out.println("The read failed: " + firebaseError.getMessage());
                     }
                 });
-
-
     }
-
-
 }
