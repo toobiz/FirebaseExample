@@ -10,7 +10,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.mike.firebaseexample.SignupActivity">
+    tools:context="com.example.mike.firebaseexample.SigninActivity">
 
     <ImageView
         android:layout_width="240dp"
@@ -42,17 +42,17 @@
 
     <Button
         android:id="@+id/buttonSave"
-        android:text="REGISTER"
+        android:text="Log in"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <Button
-        android:id="@+id/sign_in_button"
+        android:id="@+id/sign_up_button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dip"
         android:background="@null"
-        android:text="Back to login screen"
+        android:text="Are you new? Sign up!"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="15dp" />

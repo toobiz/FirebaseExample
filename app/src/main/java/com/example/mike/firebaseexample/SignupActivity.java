@@ -22,6 +22,7 @@ import android.util.Log;
 public class SignupActivity extends AppCompatActivity {
 
     private Button buttonSave;
+    private Button buttonSignin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,7 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
 
         buttonSave = (Button) findViewById(R.id.buttonSave);
+        buttonSignin = (Button) findViewById(R.id.sign_in_button);
 
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,6 +40,13 @@ public class SignupActivity extends AppCompatActivity {
 
                 Intent profileIntent = new Intent(SignupActivity.this, ProfileActivity.class);
                 startActivity(profileIntent);
+            }
+        });
+
+        buttonSignin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
             }
         });
     }
