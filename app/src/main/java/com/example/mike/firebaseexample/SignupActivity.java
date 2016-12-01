@@ -27,7 +27,7 @@ import android.widget.Toast;
  * Created by mike on 30.11.2016.
  */
 
-public class SignupActivity extends AppCompatActivity {
+public class SignupActivity extends BaseActivity  {
 
     private EditText editTextName;
     private EditText editTextEmail;
@@ -69,7 +69,7 @@ public class SignupActivity extends AppCompatActivity {
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createUser("dupa@dupa.pl", "password");
+                createUser("dupa1@dupa.pl", "password");
             }
         });
 
@@ -83,12 +83,28 @@ public class SignupActivity extends AppCompatActivity {
 
 
     private void createUser(String email, String password) {
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-
+        // [START create_user_with_email]
+        showProgressDialog();
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
 
-                        Log.d("Hello!", "Hellog");
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(SignupActivity.this, "Failed!",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(SignupActivity.this, "Success!",
+                                    Toast.LENGTH_SHORT).show();
+
+                            Intent profileIntent = new Intent(SignupActivity.this, ProfileActivity.class);
+                            startActivity(profileIntent);
+                        }
+
+                        // [START_EXCLUDE]
+                        hideProgressDialog();
+                        // [END_EXCLUDE]
                     }
                 });
     }
