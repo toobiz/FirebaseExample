@@ -27,45 +27,45 @@ public class User {
     }
 //
 //    //Getters and setters
-//    public String getfirstName() {
-//        return firstName;
-//    }
-//
-//    public void setfirstName(String firstName) {
-//        this.firstName = firstName;
-//    }
-//
-//    public String getUid() {
-//        return uid;
-//    }
-//
-//    public void setUid(String uid) {
-//        this.uid = uid;
-//    }
-//
-//    public String getEmail() { return email;}
-//
-//    public void setEmail(String email) {
-//        this.email = email;
-//    }
-//
-//    public String getAbout() { return about; }
-//
-//    public void setAbout(String about) {
-//        this.about = about;
-//    }
-//
-//    public String getOneSignalID() { return oneSignalID; }
-//
-//    public void setOneSignalID(String oneSignalID) {
-//        this.oneSignalID = oneSignalID;
-//    }
-//
-//    public Boolean getPrivacyAgreement() { return privacyAgreement; }
-//
-//    public void setPrivacyAgreement(Boolean privacyAgreement) {
-//        this.privacyAgreement = privacyAgreement;
-//    }
+    public String getfirstName() {
+        return firstName;
+    }
+
+    public void setfirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getEmail() { return email;}
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAbout() { return about; }
+
+    public void setAbout(String about) {
+        this.about = about;
+    }
+
+    public String getOneSignalID() { return oneSignalID; }
+
+    public void setOneSignalID(String oneSignalID) {
+        this.oneSignalID = oneSignalID;
+    }
+
+    public Boolean getPrivacyAgreement() { return privacyAgreement; }
+
+    public void setPrivacyAgreement(Boolean privacyAgreement) {
+        this.privacyAgreement = privacyAgreement;
+    }
 
 
 

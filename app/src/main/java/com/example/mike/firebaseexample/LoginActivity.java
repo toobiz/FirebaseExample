@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import static com.example.mike.firebaseexample.R.id.editTextEmail;
 
@@ -77,6 +78,23 @@ public class LoginActivity extends BaseActivity{
             }
 
         });
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d("Sign in state", "onAuthStateChanged:signed_in:" + user.getUid());
+                    uid = user.getUid();
+                } else {
+                    // User is signed out
+                    Log.d("Sign in state", "onAuthStateChanged:signed_out");
+                }
+                // ...
+            }
+        };
     }
 
     private void loginUser(String email, String password) {
@@ -96,10 +114,25 @@ public class LoginActivity extends BaseActivity{
                                     Toast.LENGTH_SHORT).show();
 
                             Intent profileIntent = new Intent(LoginActivity.this, ProfileActivity.class);
+                            profileIntent.putExtra("uid", uid);
                             startActivity(profileIntent);
                         }
                         hideProgressDialog();
                     }
                 });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
     }
 }

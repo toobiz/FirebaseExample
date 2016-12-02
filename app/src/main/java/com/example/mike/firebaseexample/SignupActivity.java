@@ -31,12 +31,7 @@ public class SignupActivity extends BaseActivity  {
     private Button buttonSave;
     private Button buttonSignin;
 
-    private FirebaseAuth mAuth;
-    public FirebaseAuth.AuthStateListener mAuthListener;
-
     private DatabaseReference mDatabase;
-
-    private String uid;
 
     private static final String TAG = "MainActivity";
 

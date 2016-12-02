@@ -16,7 +16,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import android.util.Log;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends BaseActivity {
 
     private TextView textViewPersons;
     private Button buttonLogout;
@@ -42,31 +42,33 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(loginIntent);
             }
         });
-
+                showProgressDialog();
                 //Value event listener for realtime data update
-//                ref.addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(DataSnapshot snapshot) {
-//                        for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-//                            //Getting the data from snapshot
-//                            User person = postSnapshot.getValue(User.class);
-//
-//                            //Adding it to a string
-//                            String string = "\nName: " + person.getfirstName() + "\n\nAddress: " + person.getEmail() + "\n\nUID: " + person.getUid() +
-//                                    "\n\nAbout me: " + person.getAbout() + "\n\nOneSignalID: " + person.getOneSignalID() + "\n\nPrivacy Agreement: "
-//                                    + person.getPrivacyAgreement() +"\n";
-//
-//                            //Displaying it on textview
-//                            textViewPersons.setText(string);
-//                            Log.d("myTag", person.getfirstName());
-//
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(DatabaseError firebaseError) {
-//                        System.out.println("The read failed: " + firebaseError.getMessage());
-//                    }
-//                });
+
+                String myUid = getIntent().getStringExtra("uid");
+                ref.child(myUid).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                            //Getting the data from snapshot
+                            User person = snapshot.getValue(User.class);
+
+                            //Adding it to a string
+                            String string = "\nName: " + person.getfirstName() + "\n\nAddress: " + person.getEmail() + "\n\nUID: " + person.getUid() +
+                                    "\n\nAbout me: " + person.getAbout() + "\n\nOneSignalID: " + person.getOneSignalID() + "\n\nPrivacy Agreement: "
+                                    + person.getPrivacyAgreement() +"\n";
+
+                            //Displaying it on textview
+                            textViewPersons.setText(string);
+                            Log.d("myTag", person.getfirstName());
+                            hideProgressDialog();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError firebaseError) {
+                        System.out.println("The read failed: " + firebaseError.getMessage());
+                    }
+                });
     }
 }
