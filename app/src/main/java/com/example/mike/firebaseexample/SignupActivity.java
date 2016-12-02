@@ -133,6 +133,7 @@ public class SignupActivity extends BaseActivity  {
                             saveUserData(email, password);
 
                             Intent profileIntent = new Intent(SignupActivity.this, ProfileActivity.class);
+                            profileIntent.putExtra("uid", uid);
                             startActivity(profileIntent);
                         }
                         hideProgressDialog();
