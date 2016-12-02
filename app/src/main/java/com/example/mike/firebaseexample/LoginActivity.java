@@ -113,9 +113,12 @@ public class LoginActivity extends BaseActivity{
                             Toast.makeText(LoginActivity.this, "Success!",
                                     Toast.LENGTH_SHORT).show();
 
-                            Intent profileIntent = new Intent(LoginActivity.this, ProfileActivity.class);
-                            profileIntent.putExtra("uid", uid);
-                            startActivity(profileIntent);
+                            Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(mainIntent);
+
+//                            Intent profileIntent = new Intent(LoginActivity.this, ProfileActivity.class);
+//                            profileIntent.putExtra("uid", uid);
+//                            startActivity(profileIntent);
                         }
                         hideProgressDialog();
                     }
