@@ -1,4 +1,4 @@
-package com.example.mike.firebaseexample.Fragments;
+package pl.tubis.boardgamer.Fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.mike.firebaseexample.R;
+import pl.tubis.boardgamer.R;
 
 /**
  * Created by mike on 05.12.2016.

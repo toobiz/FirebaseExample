@@ -1,4 +1,4 @@
-package com.example.mike.firebaseexample.Activities;
+package pl.tubis.boardgamer.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.mike.firebaseexample.R;
+import pl.tubis.boardgamer.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;

@@ -1,4 +1,4 @@
-package com.example.mike.firebaseexample.Activities;
+package pl.tubis.boardgamer.Activities;
 
 import android.app.ProgressDialog;
 import android.support.annotation.VisibleForTesting;

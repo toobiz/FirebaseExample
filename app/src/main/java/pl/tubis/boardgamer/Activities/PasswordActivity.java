@@ -1,13 +1,11 @@
-package com.example.mike.firebaseexample.Activities;
+package pl.tubis.boardgamer.Activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.mike.firebaseexample.R;
+import pl.tubis.boardgamer.R;
 
 /**
  * Created by mike on 01.12.2016.

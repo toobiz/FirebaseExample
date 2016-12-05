@@ -1,4 +1,4 @@
-package com.example.mike.firebaseexample.Activities;
+package pl.tubis.boardgamer.Activities;
 
 import android.support.annotation.NonNull;
 import android.os.Bundle;
@@ -7,8 +7,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.content.Intent;
 
-import com.example.mike.firebaseexample.R;
-import com.example.mike.firebaseexample.Model.User;
+import pl.tubis.boardgamer.R;
+import pl.tubis.boardgamer.Model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;

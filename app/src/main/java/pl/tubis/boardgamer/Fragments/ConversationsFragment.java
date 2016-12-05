@@ -1,4 +1,4 @@
-package com.example.mike.firebaseexample.Fragments;
+package pl.tubis.boardgamer.Fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -6,17 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.mike.firebaseexample.R;
+import pl.tubis.boardgamer.R;
 
 /**
  * Created by mike on 05.12.2016.
  */
 
-public class MapFragment extends Fragment {
+public class ConversationsFragment extends Fragment {
 
-    MapView mMapView;
-
-    public MapFragment() {
+    public ConversationsFragment() {
         // Required empty public constructor
     }
 
@@ -25,6 +23,6 @@ public class MapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_map, container, false);
+        return inflater.inflate(R.layout.fragment_conversations, container, false);
     }
 }

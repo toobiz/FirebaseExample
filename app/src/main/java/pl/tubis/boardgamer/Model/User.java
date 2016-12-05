@@ -1,4 +1,4 @@
-package com.example.mike.firebaseexample.Model;
+package pl.tubis.boardgamer.Model;
 
 /**
  * Created by mike on 29.11.2016.

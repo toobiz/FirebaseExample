@@ -1,4 +1,4 @@
-package com.example.mike.firebaseexample.Activities;
+package pl.tubis.boardgamer.Activities;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -17,11 +17,11 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.mike.firebaseexample.Fragments.ConversationsFragment;
-import com.example.mike.firebaseexample.Fragments.GamesFragment;
-import com.example.mike.firebaseexample.Fragments.MapFragment;
-import com.example.mike.firebaseexample.Fragments.ProfileFragment;
-import com.example.mike.firebaseexample.R;
+import pl.tubis.boardgamer.Fragments.ConversationsFragment;
+import pl.tubis.boardgamer.Fragments.GamesFragment;
+import pl.tubis.boardgamer.Fragments.MapFragment;
+import pl.tubis.boardgamer.Fragments.ProfileFragment;
+import pl.tubis.boardgamer.R;
 
 import java.util.ArrayList;
 
