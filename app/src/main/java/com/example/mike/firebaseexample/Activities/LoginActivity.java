@@ -1,8 +1,6 @@
-package com.example.mike.firebaseexample;
+package com.example.mike.firebaseexample.Activities;
 
-import android.app.Activity;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,19 +10,18 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.mike.firebaseexample.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import static com.example.mike.firebaseexample.R.id.editTextEmail;
-
 /**
  * Created by mike on 01.12.2016.
  */
 
-public class LoginActivity extends BaseActivity{
+public class LoginActivity extends BaseActivity {
 
     private EditText editTextEmail;
     private EditText editTextPassword;

@@ -10,7 +10,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.mike.firebaseexample.SignupActivity">
+    tools:context="com.example.mike.firebaseexample.Activities.SignupActivity">
 
     <ImageView
         android:layout_width="240dp"

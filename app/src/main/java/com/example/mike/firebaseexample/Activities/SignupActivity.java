@@ -1,4 +1,4 @@
-package com.example.mike.firebaseexample;
+package com.example.mike.firebaseexample.Activities;
 
 import android.support.annotation.NonNull;
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.content.Intent;
 
+import com.example.mike.firebaseexample.R;
+import com.example.mike.firebaseexample.Model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,7 +24,7 @@ import android.widget.Toast;
  * Created by mike on 30.11.2016.
  */
 
-public class SignupActivity extends BaseActivity  {
+public class SignupActivity extends BaseActivity {
 
     private EditText editTextName;
     private EditText editTextEmail;

@@ -1,15 +1,13 @@
-package com.example.mike.firebaseexample;
+package com.example.mike.firebaseexample.Activities;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -18,6 +16,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.example.mike.firebaseexample.Fragments.ConversationsFragment;
+import com.example.mike.firebaseexample.Fragments.GamesFragment;
+import com.example.mike.firebaseexample.Fragments.MapFragment;
+import com.example.mike.firebaseexample.Fragments.ProfileFragment;
+import com.example.mike.firebaseexample.R;
 
 import java.util.ArrayList;
 
@@ -132,14 +136,28 @@ public class MainActivity extends AppCompatActivity {
     private void selectItemFromDrawer(int position) {
 
         if (position == 0) {
-            Fragment fragment = new PreferencesFragment();
+            Fragment fragment = new MapFragment();
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
-            .replace(R.id.mainContent, fragment)
+                    .replace(R.id.mainContent, fragment)
                     .commit();
         }
         if (position == 1) {
-            Fragment fragment = new MapFragment();
+            Fragment fragment = new ConversationsFragment();
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.mainContent, fragment)
+                    .commit();
+        }
+        if (position == 2) {
+            Fragment fragment = new GamesFragment();
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.mainContent, fragment)
+                    .commit();
+        }
+        if (position == 3) {
+            Fragment fragment = new ProfileFragment();
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.mainContent, fragment)

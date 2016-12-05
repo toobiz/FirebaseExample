@@ -1,4 +1,4 @@
-package com.example.mike.firebaseexample;
+package com.example.mike.firebaseexample.Fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -6,11 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.mike.firebaseexample.R;
+
 /**
  * Created by mike on 05.12.2016.
  */
 
 public class MapFragment extends Fragment {
+
+    MapView mMapView;
 
     public MapFragment() {
         // Required empty public constructor

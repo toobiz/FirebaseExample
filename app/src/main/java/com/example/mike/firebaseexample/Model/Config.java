@@ -1,4 +1,4 @@
-package com.example.mike.firebaseexample;
+package com.example.mike.firebaseexample.Model;
 
 /**
  * Created by mike on 01.12.2016.
