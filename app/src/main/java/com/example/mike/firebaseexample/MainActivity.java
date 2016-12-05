@@ -130,12 +130,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void selectItemFromDrawer(int position) {
-        Fragment fragment = new PreferencesFragment();
 
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.mainContent, fragment)
-                .commit();
+        if (position == 0) {
+            Fragment fragment = new PreferencesFragment();
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+            .replace(R.id.mainContent, fragment)
+                    .commit();
+        }
+        if (position == 1) {
+            Fragment fragment = new MapFragment();
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.mainContent, fragment)
+                    .commit();
+        }
+
 //
 //        Intent profileIntent = new Intent(MainActivity.this, ProfileActivity.class);
 //        profileIntent.putExtra("uid", uid);
