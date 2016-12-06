@@ -11,6 +11,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -51,7 +52,9 @@ public class MapFragment extends Fragment {
 
                 // For dropping a marker at a point on the Map
                 LatLng warsaw = new LatLng(52, 21);
-                googleMap.addMarker(new MarkerOptions().position(warsaw).title("Michał Tubis").snippet("I love board games!"));
+                MarkerOptions marker = new MarkerOptions().position(warsaw).title("Michał Tubis").snippet("I love board games!").icon
+                        (BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker));
+                googleMap.addMarker(marker);
 
                 // For zooming automatically to the location of the marker
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(warsaw).zoom(8).build();
