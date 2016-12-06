@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private static String TAG = MainActivity.class.getSimpleName();
+    public static String myUid;
 
     ListView mDrawerList;
     RelativeLayout mDrawerPane;
@@ -130,6 +131,8 @@ public class MainActivity extends AppCompatActivity {
                 selectItemFromDrawer(position);
             }
         });
+
+        myUid = getIntent().getStringExtra("uid");
 
         Fragment fragment = new MapFragment();
         FragmentManager fragmentManager = getFragmentManager();

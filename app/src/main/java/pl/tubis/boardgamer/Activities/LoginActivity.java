@@ -111,6 +111,7 @@ public class LoginActivity extends BaseActivity {
                                     Toast.LENGTH_SHORT).show();
 
                             Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+                            mainIntent.putExtra("uid", uid);
                             startActivity(mainIntent);
 
 //                            Intent profileIntent = new Intent(LoginActivity.this, ProfileActivity.class);
@@ -135,4 +136,6 @@ public class LoginActivity extends BaseActivity {
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
+
+
 }
