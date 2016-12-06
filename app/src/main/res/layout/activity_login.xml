@@ -26,6 +26,7 @@
 
     <EditText
         android:id="@+id/editTextEmail"
+        android:text="mihail@wera.pl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -37,6 +38,7 @@
 
     <EditText
         android:id="@+id/editTextPassword"
+        android:text="password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

@@ -131,6 +131,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Fragment fragment = new MapFragment();
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.mainContent, fragment)
+                .commit();
+
     }
 
     private void selectItemFromDrawer(int position) {
