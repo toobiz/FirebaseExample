@@ -2,6 +2,7 @@ package pl.tubis.boardgamer.Fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +16,17 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import pl.tubis.boardgamer.Model.Marker;
+import pl.tubis.boardgamer.Model.User;
 import pl.tubis.boardgamer.R;
+
+import static pl.tubis.boardgamer.Activities.MainActivity.myUid;
 
 /**
  * Created by mike on 05.12.2016.
@@ -26,6 +36,9 @@ public class MapFragment extends Fragment {
 
     MapView mMapView;
     private GoogleMap googleMap;
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference ref = database.getReference("locations");
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,24 +58,55 @@ public class MapFragment extends Fragment {
         mMapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap mMap) {
-                googleMap = mMap;
+
 
                 // For showing a move to my location button
 //                googleMap.setMyLocationEnabled(true);
 
-                // For dropping a marker at a point on the Map
-                LatLng warsaw = new LatLng(52, 21);
-                MarkerOptions marker = new MarkerOptions().position(warsaw).title("Michał Tubis").snippet("I love board games!").icon
-                        (BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker));
-                googleMap.addMarker(marker);
+                downloadLocations(mMap);
 
-                // For zooming automatically to the location of the marker
+                // For adding a marker at a point on the Map
+                LatLng warsaw = new LatLng(52, 21);
+                mMap.addMarker(addNewMarker(warsaw));
+
+//                 For zooming to the location of the user
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(warsaw).zoom(8).build();
-                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
             }
         });
 
         return rootView;
+    }
+
+    private MarkerOptions addNewMarker(LatLng location){
+//        LatLng warsaw = new LatLng(52, 21);
+        MarkerOptions marker = new MarkerOptions().position(location).icon
+                (BitmapDescriptorFactory.fromResource(R.mipmap.ic_marker));
+        return marker;
+    }
+
+    private void downloadLocations(final GoogleMap mMap){
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    //Getting the data from snapshot
+                    Marker marker = postSnapshot.getValue(Marker.class);
+                    LatLng location = new LatLng(marker.getLat(), marker.getLon());
+
+                    mMap.addMarker(addNewMarker(location));
+                    
+                    Log.d("myTag", marker.getLat().toString());
+//                    hideProgressDialog();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError firebaseError) {
+                System.out.println("The read failed: " + firebaseError.getMessage());
+            }
+        });
     }
 
     @Override

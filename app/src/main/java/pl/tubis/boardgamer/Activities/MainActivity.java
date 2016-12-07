@@ -138,10 +138,7 @@ public class MainActivity extends AppCompatActivity {
         myUid = getIntent().getStringExtra("uid");
 
         Fragment fragment = new MapFragment();
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.mainContent, fragment)
-                .commit();
+        createFragment(fragment);
 
         setupDrawer();
     }
@@ -191,31 +188,19 @@ public class MainActivity extends AppCompatActivity {
 
         if (position == 0) {
             Fragment fragment = new MapFragment();
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.mainContent, fragment)
-                    .commit();
+            createFragment(fragment);
         }
         if (position == 1) {
             Fragment fragment = new ConversationsFragment();
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.mainContent, fragment)
-                    .commit();
+            createFragment(fragment);
         }
         if (position == 2) {
             Fragment fragment = new GamesFragment();
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.mainContent, fragment)
-                    .commit();
+            createFragment(fragment);
         }
         if (position == 3) {
             Fragment fragment = new ProfileFragment();
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.mainContent, fragment)
-                    .commit();
+            createFragment(fragment);
         }
 
 //
@@ -228,6 +213,13 @@ public class MainActivity extends AppCompatActivity {
 
         // Close the drawer
         mDrawerLayout.closeDrawer(mDrawerPane);
+    }
+
+    private void createFragment(Fragment fragment){
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.mainContent, fragment)
+                .commit();
     }
 
     private void setupDrawer() {
