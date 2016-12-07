@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -22,6 +23,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import pl.tubis.boardgamer.Model.Marker;
 import pl.tubis.boardgamer.Model.User;
 import pl.tubis.boardgamer.R;
@@ -36,6 +40,8 @@ public class MapFragment extends Fragment {
 
     MapView mMapView;
     private GoogleMap googleMap;
+    Map<String, Double> mMarkers = new HashMap<String, Double>();
+
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference ref = database.getReference("locations");
@@ -73,6 +79,20 @@ public class MapFragment extends Fragment {
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(warsaw).zoom(8).build();
                 mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
+                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(com.google.android.gms.maps.model.Marker marker) {
+
+                        marker.setTitle("Michał Tubis");
+                        marker.setSnippet("I love board games!");
+                        mMarkers.get(marker.getTitle());
+
+
+
+                        return false;
+                    }
+                });
+
             }
         });
 
@@ -92,12 +112,13 @@ public class MapFragment extends Fragment {
             public void onDataChange(DataSnapshot snapshot) {
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     //Getting the data from snapshot
-                    Marker marker = postSnapshot.getValue(Marker.class);
-                    LatLng location = new LatLng(marker.getLat(), marker.getLon());
+                    final Marker newMarker = postSnapshot.getValue(Marker.class);
+                    LatLng location = new LatLng(newMarker.getLat(), newMarker.getLon());
 
                     mMap.addMarker(addNewMarker(location));
-                    
-                    Log.d("myTag", marker.getLat().toString());
+                    mMarkers.put("Title", newMarker.getLat());
+
+                    Log.d("myTag", newMarker.getLat().toString());
 //                    hideProgressDialog();
                 }
             }
