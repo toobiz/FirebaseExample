@@ -73,12 +73,12 @@ public class MapFragment extends Fragment {
                 downloadLocations(mMap);
 
                 // For adding a marker at a point on the Map
-//                LatLng warsaw = new LatLng(52, 21);
-//                mMap.addMarker(addNewMarker(warsaw));
+                LatLng warsaw = new LatLng(52, 21);
+                mMap.addMarker(addNewMarker(warsaw));
 //
 ////                 For zooming to the location of the user
-//                CameraPosition cameraPosition = new CameraPosition.Builder().target(warsaw).zoom(8).build();
-//                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                CameraPosition cameraPosition = new CameraPosition.Builder().target(warsaw).zoom(10).build();
+                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
                 mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override
