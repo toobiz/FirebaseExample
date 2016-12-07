@@ -40,11 +40,12 @@ public class MapFragment extends Fragment {
 
     MapView mMapView;
     private GoogleMap googleMap;
-    Map<String, Double> mMarkers = new HashMap<String, Double>();
+    Map<String, String> mMarkers = new HashMap<String, String>();
 
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference ref = database.getReference("locations");
+    DatabaseReference locationsRef = database.getReference("locations");
+    DatabaseReference usersRef = database.getReference("users");
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,22 +73,20 @@ public class MapFragment extends Fragment {
                 downloadLocations(mMap);
 
                 // For adding a marker at a point on the Map
-                LatLng warsaw = new LatLng(52, 21);
-                mMap.addMarker(addNewMarker(warsaw));
-
-//                 For zooming to the location of the user
-                CameraPosition cameraPosition = new CameraPosition.Builder().target(warsaw).zoom(8).build();
-                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+//                LatLng warsaw = new LatLng(52, 21);
+//                mMap.addMarker(addNewMarker(warsaw));
+//
+////                 For zooming to the location of the user
+//                CameraPosition cameraPosition = new CameraPosition.Builder().target(warsaw).zoom(8).build();
+//                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
                 mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override
                     public boolean onMarkerClick(com.google.android.gms.maps.model.Marker marker) {
 
-                        marker.setTitle("Michał Tubis");
-                        marker.setSnippet("I love board games!");
-                        mMarkers.get(marker.getTitle());
+                        String uid = mMarkers.get(marker.getId());
 
-
+                        downloadUserData(marker, uid);
 
                         return false;
                     }
@@ -99,6 +98,35 @@ public class MapFragment extends Fragment {
         return rootView;
     }
 
+    private void downloadUserData(final com.google.android.gms.maps.model.Marker marker, final String uid){
+        usersRef.child(uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    //Getting the data from snapshot
+                    User person = snapshot.getValue(User.class);
+
+
+                    marker.setTitle(person.getfirstName());
+                    marker.setSnippet(person.getAbout());
+
+//                    //Adding it to a string
+//                    String string = "\nName: " + person.getfirstName() + "\n\nAddress: " + person.getEmail() + "\n\nUID: " + person.getUid() +
+//                            "\n\nAbout me: " + person.getAbout() + "\n\nOneSignalID: " + person.getOneSignalID() + "\n\nPrivacy Agreement: "
+//                            + person.getPrivacyAgreement() + "\n";
+
+
+//                    hideProgressDialog();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError firebaseError) {
+                System.out.println("The read failed: " + firebaseError.getMessage());
+            }
+        });
+    }
+
     private MarkerOptions addNewMarker(LatLng location){
 //        LatLng warsaw = new LatLng(52, 21);
         MarkerOptions marker = new MarkerOptions().position(location).icon
@@ -107,7 +135,7 @@ public class MapFragment extends Fragment {
     }
 
     private void downloadLocations(final GoogleMap mMap){
-        ref.addValueEventListener(new ValueEventListener() {
+        locationsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
@@ -115,8 +143,9 @@ public class MapFragment extends Fragment {
                     final Marker newMarker = postSnapshot.getValue(Marker.class);
                     LatLng location = new LatLng(newMarker.getLat(), newMarker.getLon());
 
-                    mMap.addMarker(addNewMarker(location));
-                    mMarkers.put("Title", newMarker.getLat());
+                    com.google.android.gms.maps.model.Marker mkr = mMap.addMarker(addNewMarker(location));
+
+                    mMarkers.put(mkr.getId(), newMarker.getUid());
 
                     Log.d("myTag", newMarker.getLat().toString());
 //                    hideProgressDialog();

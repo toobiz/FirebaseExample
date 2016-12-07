@@ -8,7 +8,7 @@ public class Marker {
 
     public Double latitude;
     public Double longitude;
-
+    public String uid;
 
     public Marker() {
     }
@@ -38,5 +38,14 @@ public class Marker {
     public void setLon(Double longitude) {
         this.longitude = longitude;
     }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
 
 }
