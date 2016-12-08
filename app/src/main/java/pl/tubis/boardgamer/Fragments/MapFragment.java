@@ -144,7 +144,7 @@ public class MapFragment extends Fragment {
                 ActivityCompat.requestPermissions(getActivity(), new String[]{permission}, requestCode);
             }
         } else {
-            Toast.makeText(getActivity(), "" + permission + " is already granted.", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getActivity(), "" + permission + " is already granted.", Toast.LENGTH_SHORT).show();
 //            if (client == null) {
 //                buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);

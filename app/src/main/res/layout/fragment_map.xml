@@ -8,4 +8,52 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="bottom"-->
+        <!--android:text="Demo Button"-->
+        <!--android:padding="10dp"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--android:paddingRight="10dp"/>-->
+
+        <!--/>-->
+
+    <!--<LinearLayout-->
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:gravity="center|bottom"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/button1"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="145dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:text="Check in"
+            android:textColor="@color/white"
+            android:background="@color/green"
+            android:layout_marginBottom="20dp"
+            />
+
+        <!--<Button-->
+            <!--android:id="@+id/button2"-->
+            <!--style="?android:attr/buttonStyleSmall"-->
+            <!--android:layout_width="145dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_horizontal|center"-->
+            <!--android:text="2" />-->
+
+        <!--<Button-->
+            <!--android:id="@+id/button3"-->
+            <!--style="?android:attr/buttonStyleSmall"-->
+            <!--android:layout_width="145dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_horizontal|center"-->
+            <!--android:text="3" />-->
+    <!--</LinearLayout>-->
+
 </RelativeLayout>
