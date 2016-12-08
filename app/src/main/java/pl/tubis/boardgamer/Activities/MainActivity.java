@@ -4,6 +4,8 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.location.Location;
+import android.location.LocationListener;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -19,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 
 import pl.tubis.boardgamer.Fragments.ConversationsFragment;
 import pl.tubis.boardgamer.Fragments.GamesFragment;
@@ -215,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout.closeDrawer(mDrawerPane);
     }
 
-    private void createFragment(Fragment fragment){
+    public void createFragment(Fragment fragment){
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.mainContent, fragment)
@@ -244,5 +247,6 @@ public class MainActivity extends AppCompatActivity {
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
+
 
 }

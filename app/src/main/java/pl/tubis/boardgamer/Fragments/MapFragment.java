@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -14,12 +15,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
@@ -34,6 +37,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -66,6 +70,7 @@ public class MapFragment extends Fragment {
     LocationRequest mLocationRequest;
     PendingResult<LocationSettingsResult> result;
     LatLng myPosition;
+    private Button checkinButton;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference locationsRef = database.getReference("locations");
@@ -102,11 +107,13 @@ public class MapFragment extends Fragment {
                 downloadLocations(mMap);
                 askForPermission(Manifest.permission.ACCESS_FINE_LOCATION,LOCATION, mMap);
 
-                // For adding a marker at a point on the Map
+//                // For adding a marker at a point on the Map
 //                LatLng warsaw = new LatLng(52, 21);
 //                mMap.addMarker(addNewMarker(warsaw));
-//
-
+////
+////            ////                 For zooming to the location of the user
+//            CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosition).zoom(10).build();
+//            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
                 mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override
@@ -122,32 +129,72 @@ public class MapFragment extends Fragment {
                         return false;
                     }
                 });
+                mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                    @Override
+                    public void onInfoWindowClick(com.google.android.gms.maps.model.Marker marker) {
+                        Fragment fragment = new ProfileFragment();
+                        ((MainActivity)getActivity()).createFragment(fragment);
+                    }
+                });
 
             }
         });
+
+        checkinButton = (Button) rootView.findViewById(R.id.checkin_button);
+
+        checkinButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    Toast.makeText(getActivity(), "" + myPosition , Toast.LENGTH_LONG).show();
+            }
+        });
+
 
         return rootView;
     }
 
     private void askForPermission(String permission, Integer requestCode, GoogleMap mMap) {
-        if (ContextCompat.checkSelfPermission(getActivity(), permission) != PackageManager.PERMISSION_GRANTED) {
 
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), permission)) {
+        // Check if we're running on Android 5.0 or higher
+        if (Build.VERSION.SDK_INT >= 23) {
 
-                //This is called if user has denied the permission before
-                //In this case I am just asking the permission again
-                ActivityCompat.requestPermissions(getActivity(), new String[]{permission}, requestCode);
+            if (ContextCompat.checkSelfPermission(getActivity(), permission) != PackageManager.PERMISSION_GRANTED) {
 
+                // Should we show an explanation?
+                if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), permission)) {
+
+                    //This is called if user has denied the permission before
+                    //In this case I am just asking the permission again
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{permission}, requestCode);
+
+                } else {
+
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{permission}, requestCode);
+                }
             } else {
 
-                ActivityCompat.requestPermissions(getActivity(), new String[]{permission}, requestCode);
+//            showMyLocation(mMap);
+                mMap.setMyLocationEnabled(true);
+
+                // Getting LocationManager object from System Service LOCATION_SERVICE
+                LocationManager locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+
+                // Creating a criteria object to retrieve provider
+                Criteria criteria = new Criteria();
+
+                // Getting the name of the best provider
+                String provider = locationManager.getBestProvider(criteria, true);
+
+                // Getting Current Location
+                Location location = locationManager.getLastKnownLocation(provider);
             }
+
         } else {
-//            Toast.makeText(getActivity(), "" + permission + " is already granted.", Toast.LENGTH_SHORT).show();
-//            if (client == null) {
+//            showMyLocation(mMap);
+
+            //            if (client == null) {
 //                buildGoogleApiClient();
-            mMap.setMyLocationEnabled(true);
+//            mMap.setMyLocationEnabled(true);
 
             // Getting LocationManager object from System Service LOCATION_SERVICE
             LocationManager locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
@@ -179,9 +226,48 @@ public class MapFragment extends Fragment {
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosition).zoom(10).build();
                 mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
-//            }
         }
+
+
     }
+
+//    private void showMyLocation(GoogleMap mMap){
+//        //            Toast.makeText(getActivity(), "" + permission + " is already granted.", Toast.LENGTH_SHORT).show();
+////            if (client == null) {
+////                buildGoogleApiClient();
+//        mMap.setMyLocationEnabled(true);
+//
+//        // Getting LocationManager object from System Service LOCATION_SERVICE
+//        LocationManager locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+//
+//        // Creating a criteria object to retrieve provider
+//        Criteria criteria = new Criteria();
+//
+//        // Getting the name of the best provider
+//        String provider = locationManager.getBestProvider(criteria, true);
+//
+//        // Getting Current Location
+//        Location location = locationManager.getLastKnownLocation(provider);
+//
+//        if (location != null) {
+//            // Getting latitude of the current location
+//            double latitude = location.getLatitude();
+//
+//            // Getting longitude of the current location
+//            double longitude = location.getLongitude();
+//
+//            // Creating a LatLng object for the current location
+//            LatLng latLng = new LatLng(latitude, longitude);
+//
+//            myPosition = new LatLng(latitude, longitude);
+//
+//            mMap.addMarker(new MarkerOptions().position(myPosition).title("It's Me!"));
+//
+//            ////                 For zooming to the location of the user
+//            CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosition).zoom(10).build();
+//            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+//        }
+//    }
 
     private MarkerOptions addNewMarker(LatLng location){
 //        LatLng warsaw = new LatLng(52, 21);
@@ -215,44 +301,6 @@ public class MapFragment extends Fragment {
         });
     }
 
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        if(ActivityCompat.checkSelfPermission(getActivity(), permissions[0]) == PackageManager.PERMISSION_GRANTED){
-//                    askForGPS();
-//        }else{
-//            Toast.makeText(getActivity(), "Permission denied", Toast.LENGTH_SHORT).show();
-//        }
-//    }
-
-//    private void askForGPS(){
-//        mLocationRequest = LocationRequest.create();
-//        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-//        mLocationRequest.setInterval(30 * 1000);
-//        mLocationRequest.setFastestInterval(5 * 1000);
-//        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(mLocationRequest);
-//        builder.setAlwaysShow(true);
-//        result = LocationServices.SettingsApi.checkLocationSettings(client, builder.build());
-//        result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
-//            @Override
-//            public void onResult(LocationSettingsResult result) {
-//                final Status status = result.getStatus();
-//                switch (status.getStatusCode()) {
-//                    case LocationSettingsStatusCodes.SUCCESS:
-//                        break;
-//                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
-////                        try {
-//////                            status.startResolutionForResult(getActivity().this, GPS_SETTINGS);
-////                        } catch (IntentSender.SendIntentException e) {
-////
-////                        }
-//                        break;
-//                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-//                        break;
-//                }
-//            }
-//        });
-//    }
 
     private void downloadUserData(final com.google.android.gms.maps.model.Marker marker, final String uid){
         usersRef.child(uid).addValueEventListener(new ValueEventListener() {
@@ -283,7 +331,31 @@ public class MapFragment extends Fragment {
         });
     }
 
+    private android.location.LocationListener ll = new android.location.LocationListener(){
+        public void onLocationChanged(Location location) {
+            // Getting latitude of the current location
+            double latitude = location.getLatitude();
 
+            // Getting longitude of the current location
+            double longitude = location.getLongitude();
+
+            // Creating a LatLng object for the current location
+            LatLng latLng = new LatLng(latitude, longitude);
+
+            myPosition = new LatLng(latitude, longitude);
+
+
+
+            googleMap.addMarker(new MarkerOptions().position(myPosition).title("It's Me!"));
+
+            ////                 For zooming to the location of the user
+            CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosition).zoom(10).build();
+            googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        }
+        public void onProviderDisabled(String provider) {}
+        public void onProviderEnabled(String provider) {}
+        public void onStatusChanged(String provider, int status, Bundle extras) {}
+    };
 
     @Override
     public void onResume() {
