@@ -47,6 +47,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 import java.util.Map;
 
+import im.delight.android.location.SimpleLocation;
 import pl.tubis.boardgamer.Activities.MainActivity;
 import pl.tubis.boardgamer.Model.Marker;
 import pl.tubis.boardgamer.Model.User;
@@ -69,8 +70,9 @@ public class MapFragment extends Fragment {
     GoogleApiClient client;
     LocationRequest mLocationRequest;
     PendingResult<LocationSettingsResult> result;
-    LatLng myPosition;
+//    LatLng myPosition;
     private Button checkinButton;
+    SimpleLocation location;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference locationsRef = database.getReference("locations");
@@ -79,6 +81,15 @@ public class MapFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
+
+        location = new SimpleLocation(getActivity().getApplicationContext());
+
+        if (!location.hasLocationEnabled() || location.getLongitude() == 0) {
+            // ask the user to enable location access
+            SimpleLocation.openSettings(getActivity());
+        }
+
+
 
         client = new GoogleApiClient.Builder(getActivity())
 //                .addApi(AppIndex.API)
@@ -105,28 +116,32 @@ public class MapFragment extends Fragment {
 //                googleMap.setMyLocationEnabled(true);
 
                 downloadLocations(mMap);
-                askForPermission(Manifest.permission.ACCESS_FINE_LOCATION,LOCATION, mMap);
+//                askForPermission(Manifest.permission.ACCESS_FINE_LOCATION,LOCATION, mMap);
 
 //                // For adding a marker at a point on the Map
-//                LatLng warsaw = new LatLng(52, 21);
-//                mMap.addMarker(addNewMarker(warsaw));
+                final double latitude = location.getLatitude();
+                final double longitude = location.getLongitude();
+                LatLng myPosition = new LatLng(latitude, longitude);
+                                mMap.addMarker(new MarkerOptions().position(myPosition).title("It's Me!"));
+//                mMap.addMarker(addNewMarker(myPosition));
 ////
 ////            ////                 For zooming to the location of the user
-//            CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosition).zoom(10).build();
-//            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosition).zoom(10).build();
+            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
                 mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override
                     public boolean onMarkerClick(com.google.android.gms.maps.model.Marker marker) {
-
+                        marker.setTitle("Loading...");
+                        marker.setSnippet(" ");
+                        marker.showInfoWindow();
                         String uid = mMarkers.get(marker.getId());
 
                         if (uid != null){
                             downloadUserData(marker, uid);
                         }
 
-
-                        return false;
+                        return true;
                     }
                 });
                 mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
@@ -145,7 +160,7 @@ public class MapFragment extends Fragment {
         checkinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    Toast.makeText(getActivity(), "" + myPosition , Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "lat: " + location.getLatitude() + " lon: " + location.getLongitude() , Toast.LENGTH_LONG).show();
             }
         });
 
@@ -153,83 +168,111 @@ public class MapFragment extends Fragment {
         return rootView;
     }
 
-    private void askForPermission(String permission, Integer requestCode, GoogleMap mMap) {
+//    @Override
+//    public void onProviderEnabled(String provider) {
+//        // TODO Auto-generated method stub
+//
+//    }
+//
+//    @Override
+//    public void onLocationChanged(Location location) {
+//        // TODO Auto-generated method stub
+//
+//        double latitude = (double) (location.getLatitude());
+//        double longitude = (double) (location.getLongitude());
+//
+//        Log.i("Geo_Location", "Latitude: " + latitude + ", Longitude: " + longitude);
+//    }
+//
+//    @Override
+//    public void onStatusChanged(String provider, int status, Bundle extras) {
+//        // TODO Auto-generated method stub
+//
+//    }
+//
+//    @Override
+//    public void onProviderDisabled(String provider) {
+//        // TODO Auto-generated method stub
+//
+//    }
 
-        // Check if we're running on Android 5.0 or higher
-        if (Build.VERSION.SDK_INT >= 23) {
-
-            if (ContextCompat.checkSelfPermission(getActivity(), permission) != PackageManager.PERMISSION_GRANTED) {
-
-                // Should we show an explanation?
-                if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), permission)) {
-
-                    //This is called if user has denied the permission before
-                    //In this case I am just asking the permission again
-                    ActivityCompat.requestPermissions(getActivity(), new String[]{permission}, requestCode);
-
-                } else {
-
-                    ActivityCompat.requestPermissions(getActivity(), new String[]{permission}, requestCode);
-                }
-            } else {
-
-//            showMyLocation(mMap);
-                mMap.setMyLocationEnabled(true);
-
-                // Getting LocationManager object from System Service LOCATION_SERVICE
-                LocationManager locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
-
-                // Creating a criteria object to retrieve provider
-                Criteria criteria = new Criteria();
-
-                // Getting the name of the best provider
-                String provider = locationManager.getBestProvider(criteria, true);
-
-                // Getting Current Location
-                Location location = locationManager.getLastKnownLocation(provider);
-            }
-
-        } else {
-//            showMyLocation(mMap);
-
-            //            if (client == null) {
-//                buildGoogleApiClient();
-//            mMap.setMyLocationEnabled(true);
-
-            // Getting LocationManager object from System Service LOCATION_SERVICE
-            LocationManager locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
-
-            // Creating a criteria object to retrieve provider
-            Criteria criteria = new Criteria();
-
-            // Getting the name of the best provider
-            String provider = locationManager.getBestProvider(criteria, true);
-
-            // Getting Current Location
-            Location location = locationManager.getLastKnownLocation(provider);
-
-            if (location != null) {
-                // Getting latitude of the current location
-                double latitude = location.getLatitude();
-
-                // Getting longitude of the current location
-                double longitude = location.getLongitude();
-
-                // Creating a LatLng object for the current location
-                LatLng latLng = new LatLng(latitude, longitude);
-
-                myPosition = new LatLng(latitude, longitude);
-
-                mMap.addMarker(new MarkerOptions().position(myPosition).title("It's Me!"));
-
-                ////                 For zooming to the location of the user
-                CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosition).zoom(10).build();
-                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-            }
-        }
-
-
-    }
+//    private void askForPermission(String permission, Integer requestCode, GoogleMap mMap) {
+//
+//        // Check if we're running on Android 5.0 or higher
+//        if (Build.VERSION.SDK_INT >= 23) {
+//
+//            if (ContextCompat.checkSelfPermission(getActivity(), permission) != PackageManager.PERMISSION_GRANTED) {
+//
+//                // Should we show an explanation?
+//                if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), permission)) {
+//
+//                    //This is called if user has denied the permission before
+//                    //In this case I am just asking the permission again
+//                    ActivityCompat.requestPermissions(getActivity(), new String[]{permission}, requestCode);
+//
+//                } else {
+//
+//                    ActivityCompat.requestPermissions(getActivity(), new String[]{permission}, requestCode);
+//                }
+//            } else {
+//
+////            showMyLocation(mMap);
+////                mMap.setMyLocationEnabled(true);
+////
+////                // Getting LocationManager object from System Service LOCATION_SERVICE
+////                LocationManager locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+////
+////                // Creating a criteria object to retrieve provider
+////                Criteria criteria = new Criteria();
+////
+////                // Getting the name of the best provider
+////                String provider = locationManager.getBestProvider(criteria, true);
+////
+////                // Getting Current Location
+////                Location location = locationManager.getLastKnownLocation(provider);
+//            }
+//
+//        } else {
+////            showMyLocation(mMap);
+//
+//            //            if (client == null) {
+////                buildGoogleApiClient();
+////            mMap.setMyLocationEnabled(true);
+//
+////            // Getting LocationManager object from System Service LOCATION_SERVICE
+////            LocationManager locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+////
+////            // Creating a criteria object to retrieve provider
+////            Criteria criteria = new Criteria();
+////
+////            // Getting the name of the best provider
+////            String provider = locationManager.getBestProvider(criteria, true);
+////
+////            // Getting Current Location
+////            Location location = locationManager.getLastKnownLocation(provider);
+//
+////            if (location != null) {
+////                // Getting latitude of the current location
+////                double latitude = location.getLatitude();
+////
+////                // Getting longitude of the current location
+////                double longitude = location.getLongitude();
+////
+////                // Creating a LatLng object for the current location
+////                LatLng latLng = new LatLng(latitude, longitude);
+////
+////                myPosition = new LatLng(latitude, longitude);
+////
+////                mMap.addMarker(new MarkerOptions().position(myPosition).title("It's Me!"));
+////
+////                ////                 For zooming to the location of the user
+////                CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosition).zoom(10).build();
+////                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+////            }
+//        }
+//
+//
+//    }
 
 //    private void showMyLocation(GoogleMap mMap){
 //        //            Toast.makeText(getActivity(), "" + permission + " is already granted.", Toast.LENGTH_SHORT).show();
@@ -313,6 +356,7 @@ public class MapFragment extends Fragment {
 
                     marker.setTitle(person.getfirstName());
                     marker.setSnippet(person.getAbout());
+                    marker.showInfoWindow();
 
 //                    //Adding it to a string
 //                    String string = "\nName: " + person.getfirstName() + "\n\nAddress: " + person.getEmail() + "\n\nUID: " + person.getUid() +
@@ -331,40 +375,44 @@ public class MapFragment extends Fragment {
         });
     }
 
-    private android.location.LocationListener ll = new android.location.LocationListener(){
-        public void onLocationChanged(Location location) {
-            // Getting latitude of the current location
-            double latitude = location.getLatitude();
-
-            // Getting longitude of the current location
-            double longitude = location.getLongitude();
-
-            // Creating a LatLng object for the current location
-            LatLng latLng = new LatLng(latitude, longitude);
-
-            myPosition = new LatLng(latitude, longitude);
-
-
-
-            googleMap.addMarker(new MarkerOptions().position(myPosition).title("It's Me!"));
-
-            ////                 For zooming to the location of the user
-            CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosition).zoom(10).build();
-            googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-        }
-        public void onProviderDisabled(String provider) {}
-        public void onProviderEnabled(String provider) {}
-        public void onStatusChanged(String provider, int status, Bundle extras) {}
-    };
+//    private android.location.LocationListener ll = new android.location.LocationListener(){
+//        public void onLocationChanged(Location location) {
+//            // Getting latitude of the current location
+//            double latitude = location.getLatitude();
+//
+//            // Getting longitude of the current location
+//            double longitude = location.getLongitude();
+//
+//            // Creating a LatLng object for the current location
+//            LatLng latLng = new LatLng(latitude, longitude);
+//
+//            myPosition = new LatLng(latitude, longitude);
+//
+//
+//
+//            googleMap.addMarker(new MarkerOptions().position(myPosition).title("It's Me!"));
+//
+//            ////                 For zooming to the location of the user
+//            CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosition).zoom(10).build();
+//            googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+//        }
+//        public void onProviderDisabled(String provider) {}
+//        public void onProviderEnabled(String provider) {}
+//        public void onStatusChanged(String provider, int status, Bundle extras) {}
+//    };
 
     @Override
     public void onResume() {
         super.onResume();
         mMapView.onResume();
+        // make the device update its location
+        location.beginUpdates();
     }
 
     @Override
     public void onPause() {
+        // stop location updates (saves battery)
+        location.endUpdates();
         super.onPause();
         mMapView.onPause();
     }
