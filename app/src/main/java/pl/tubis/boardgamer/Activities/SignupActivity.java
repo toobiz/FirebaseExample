@@ -150,7 +150,7 @@ public class SignupActivity extends BaseActivity {
     private void saveUserData(String email, String password) {
         String name = editTextName.getText().toString().trim();
 
-        User newUser = new User(name, email, " ", " ", uid, "password");
+        User newUser = new User(name, email, " ", " ", uid, "password", " ");
         mDatabase.child("users").child(uid).setValue(newUser);
     }
 

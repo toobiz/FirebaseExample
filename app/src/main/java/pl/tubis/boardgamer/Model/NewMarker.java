@@ -4,26 +4,23 @@ package pl.tubis.boardgamer.Model;
  * Created by mike on 07.12.2016.
  */
 
-public class Marker {
+public class NewMarker {
 
     public Double latitude;
     public Double longitude;
     public String uid;
 
-    public Marker() {
+    public NewMarker() {
     }
 
-//    public Marker(String firstName, String email, String about, String oneSignalID, String uid, String provider) {
-//        this.firstName = firstName;
-//        this.email = email;
-//        this.about = about;
-//        this.oneSignalID = oneSignalID;
-//        this.uid = uid;
-//        this.provider = provider;
-//    }
+    public NewMarker(Double latitude, Double longitude, String uid) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.uid = uid;
+    }
 
     //    //Getters and setters
-    public Double getLat() {
+    public Double getLatitude() {
         return latitude;
     }
 
@@ -31,7 +28,7 @@ public class Marker {
         this.latitude = latitude;
     }
 
-    public Double getLon() {
+    public Double getLongitude() {
         return longitude;
     }
 

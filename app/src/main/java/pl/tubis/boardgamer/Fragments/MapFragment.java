@@ -36,6 +36,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -49,7 +50,7 @@ import java.util.Map;
 
 import im.delight.android.location.SimpleLocation;
 import pl.tubis.boardgamer.Activities.MainActivity;
-import pl.tubis.boardgamer.Model.Marker;
+import pl.tubis.boardgamer.Model.NewMarker;
 import pl.tubis.boardgamer.Model.User;
 import pl.tubis.boardgamer.R;
 
@@ -65,14 +66,16 @@ public class MapFragment extends Fragment {
 
     MapView mMapView;
     private GoogleMap googleMap;
-    Map<String, String> mMarkers = new HashMap<String, String>();
+    Map<String, String> mMarkers;
     static final Integer LOCATION = 0x1;
     GoogleApiClient client;
     LocationRequest mLocationRequest;
     PendingResult<LocationSettingsResult> result;
 //    LatLng myPosition;
     private Button checkinButton;
-    SimpleLocation location;
+    SimpleLocation myLocation;
+    Double myLatitude;
+    Double myLongitude;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference locationsRef = database.getReference("locations");
@@ -82,9 +85,11 @@ public class MapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
 
-        location = new SimpleLocation(getActivity().getApplicationContext());
+        myLocation = new SimpleLocation(getActivity().getApplicationContext());
+        myLatitude = myLocation.getLatitude();
+        myLongitude = myLocation.getLongitude();
 
-        if (!location.hasLocationEnabled() || location.getLongitude() == 0) {
+        if (!myLocation.hasLocationEnabled() || myLocation.getLongitude() == 0) {
             // ask the user to enable location access
             SimpleLocation.openSettings(getActivity());
         }
@@ -111,46 +116,8 @@ public class MapFragment extends Fragment {
             @Override
             public void onMapReady(GoogleMap mMap) {
 
-
-                // For showing a move to my location button
-//                googleMap.setMyLocationEnabled(true);
-
-                downloadLocations(mMap);
-//                askForPermission(Manifest.permission.ACCESS_FINE_LOCATION,LOCATION, mMap);
-
-//                // For adding a marker at a point on the Map
-                final double latitude = location.getLatitude();
-                final double longitude = location.getLongitude();
-                LatLng myPosition = new LatLng(latitude, longitude);
-                                mMap.addMarker(new MarkerOptions().position(myPosition).title("It's Me!"));
-//                mMap.addMarker(addNewMarker(myPosition));
-////
-////            ////                 For zooming to the location of the user
-            CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosition).zoom(10).build();
-            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                    @Override
-                    public boolean onMarkerClick(com.google.android.gms.maps.model.Marker marker) {
-                        marker.setTitle("Loading...");
-                        marker.setSnippet(" ");
-                        marker.showInfoWindow();
-                        String uid = mMarkers.get(marker.getId());
-
-                        if (uid != null){
-                            downloadUserData(marker, uid);
-                        }
-
-                        return true;
-                    }
-                });
-                mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-                    @Override
-                    public void onInfoWindowClick(com.google.android.gms.maps.model.Marker marker) {
-                        Fragment fragment = new ProfileFragment();
-                        ((MainActivity)getActivity()).createFragment(fragment);
-                    }
-                });
+                googleMap = mMap;
+            addMarkers(true);
 
             }
         });
@@ -160,12 +127,71 @@ public class MapFragment extends Fragment {
         checkinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    Toast.makeText(getActivity(), "lat: " + location.getLatitude() + " lon: " + location.getLongitude() , Toast.LENGTH_LONG).show();
+
+                if (checkinButton.getText() == "Check out") {
+                    mMarkers = null;
+                    googleMap.clear();
+                    locationsRef.child(myUid).setValue(null);
+                    checkinButton.setText("Check in");
+                } else {
+                    Toast.makeText(getActivity(), myLatitude + " " + myLongitude , Toast.LENGTH_LONG).show();
+                    mMarkers = null;
+                    googleMap.clear();
+                    addMarkers(false);
+                    NewMarker newMarker = new NewMarker(myLatitude, myLongitude, myUid);
+                    locationsRef.child(myUid).setValue(newMarker);
+                    checkinButton.setText("Check out");
+                }
+
+
             }
         });
 
 
         return rootView;
+    }
+
+    private void addMarkers(Boolean zoom){
+        downloadLocations(googleMap);
+//                askForPermission(Manifest.permission.ACCESS_FINE_LOCATION,LOCATION, mMap);
+
+//                // For adding a marker at a point on the Map
+        final double latitude = myLocation.getLatitude();
+        final double longitude = myLocation.getLongitude();
+        LatLng myPosition = new LatLng(latitude, longitude);
+//                                mMap.addMarker(new MarkerOptions().position(myPosition).title("It's Me!"));
+//                mMap.addMarker(addNewMarker(myPosition));
+////
+////            ////                 For zooming to the location of the user
+
+        if (zoom == true){
+            CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosition).zoom(10).build();
+            googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        }
+
+
+        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(com.google.android.gms.maps.model.Marker marker) {
+                marker.setTitle("Loading...");
+                marker.setSnippet(" ");
+                marker.showInfoWindow();
+                String uid = mMarkers.get(marker.getId());
+
+                if (uid != null){
+                    downloadUserData(marker, uid);
+                }
+
+                return true;
+            }
+        });
+        googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(com.google.android.gms.maps.model.Marker marker) {
+                Fragment fragment = new ProfileFragment();
+                ((MainActivity)getActivity()).createFragment(fragment);
+            }
+        });
     }
 
 //    @Override
@@ -325,14 +351,14 @@ public class MapFragment extends Fragment {
             public void onDataChange(DataSnapshot snapshot) {
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     //Getting the data from snapshot
-                    final Marker newMarker = postSnapshot.getValue(Marker.class);
-                    LatLng location = new LatLng(newMarker.getLat(), newMarker.getLon());
+                    final NewMarker newMarker = postSnapshot.getValue(NewMarker.class);
+                    LatLng location = new LatLng(newMarker.getLatitude(), newMarker.getLongitude());
 
                     com.google.android.gms.maps.model.Marker mkr = mMap.addMarker(addNewMarker(location));
-
+                    mMarkers = new HashMap<String, String>();
                     mMarkers.put(mkr.getId(), newMarker.getUid());
 
-                    Log.d("myTag", newMarker.getLat().toString());
+                    Log.d("myTag", newMarker.getLatitude().toString());
 //                    hideProgressDialog();
                 }
             }
@@ -406,13 +432,13 @@ public class MapFragment extends Fragment {
         super.onResume();
         mMapView.onResume();
         // make the device update its location
-        location.beginUpdates();
+        myLocation.beginUpdates();
     }
 
     @Override
     public void onPause() {
         // stop location updates (saves battery)
-        location.endUpdates();
+        myLocation.endUpdates();
         super.onPause();
         mMapView.onPause();
     }

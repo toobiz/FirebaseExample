@@ -11,19 +11,21 @@ public class User {
     public String uid;
     public String about;
     public String oneSignalID;
+    public String base64String;
     public String provider;
     public Boolean privacyAgreement;
 
     public User() {
     }
 
-    public User(String firstName, String email, String about, String oneSignalID, String uid, String provider) {
+    public User(String firstName, String email, String about, String oneSignalID, String uid, String provider, String base64String) {
         this.firstName = firstName;
         this.email = email;
         this.about = about;
         this.oneSignalID = oneSignalID;
         this.uid = uid;
         this.provider = provider;
+        this.base64String = base64String;
     }
 //
 //    //Getters and setters
