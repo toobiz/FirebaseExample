@@ -1,16 +1,7 @@
 package pl.tubis.boardgamer.Fragments;
 
-import android.Manifest;
 import android.app.Fragment;
-import android.content.IntentSender;
-import android.content.pm.PackageManager;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,14 +11,9 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -36,9 +22,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -54,8 +38,6 @@ import pl.tubis.boardgamer.Model.NewMarker;
 import pl.tubis.boardgamer.Model.User;
 import pl.tubis.boardgamer.R;
 
-import static android.R.attr.permission;
-import static android.content.Context.LOCATION_SERVICE;
 import static pl.tubis.boardgamer.Activities.MainActivity.myUid;
 
 /**
@@ -141,7 +123,6 @@ public class MapFragment extends Fragment {
                     checkinButton.setText("Check out");
                 }
 
-
             }
         });
 
@@ -150,6 +131,7 @@ public class MapFragment extends Fragment {
     }
 
     private void addMarkers(Boolean zoom){
+    String mUid;
         downloadLocations(googleMap);
 //                askForPermission(Manifest.permission.ACCESS_FINE_LOCATION,LOCATION, mMap);
 
@@ -174,22 +156,27 @@ public class MapFragment extends Fragment {
                 marker.setTitle("Loading...");
                 marker.setSnippet(" ");
                 marker.showInfoWindow();
-                String uid = mMarkers.get(marker.getId());
+                final String uid = mMarkers.get(marker.getId());
 
                 if (uid != null){
                     downloadUserData(marker, uid);
                 }
 
+                googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                    @Override
+                    public void onInfoWindowClick(com.google.android.gms.maps.model.Marker marker) {
+                        Fragment fragment = new UserProfileFragment();
+                        Bundle args = new Bundle();
+                        args.putString("uid", uid);
+                        fragment.setArguments(args);
+                        ((MainActivity)getActivity()).createFragment(fragment);
+                    }
+                });
+
                 return true;
             }
         });
-        googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-            @Override
-            public void onInfoWindowClick(com.google.android.gms.maps.model.Marker marker) {
-                Fragment fragment = new ProfileFragment();
-                ((MainActivity)getActivity()).createFragment(fragment);
-            }
-        });
+
     }
 
 //    @Override

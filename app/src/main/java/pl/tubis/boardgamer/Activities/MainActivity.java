@@ -4,15 +4,11 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.res.Configuration;
-import android.location.Location;
-import android.location.LocationListener;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +23,7 @@ import android.widget.TextView;
 import pl.tubis.boardgamer.Fragments.ConversationsFragment;
 import pl.tubis.boardgamer.Fragments.GamesFragment;
 import pl.tubis.boardgamer.Fragments.MapFragment;
-import pl.tubis.boardgamer.Fragments.ProfileFragment;
+import pl.tubis.boardgamer.Fragments.MyProfileFragment;
 import pl.tubis.boardgamer.R;
 
 import java.util.ArrayList;
@@ -203,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
             createFragment(fragment);
         }
         if (position == 3) {
-            Fragment fragment = new ProfileFragment();
+            Fragment fragment = new MyProfileFragment();
             createFragment(fragment);
         }
 

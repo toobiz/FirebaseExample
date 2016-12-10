@@ -31,15 +31,16 @@ import static pl.tubis.boardgamer.R.id.textViewPersons;
  * Created by mike on 05.12.2016.
  */
 
-public class ProfileFragment extends Fragment {
+public class MyProfileFragment extends Fragment {
 
-    public ProfileFragment() {
+    public MyProfileFragment() {
         // Required empty public constructor
     }
 
     public ProgressDialog mProgressDialog;
     private TextView textViewPersons;
     private Button buttonLogout;
+    public static String uid;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference ref = database.getReference("users");
