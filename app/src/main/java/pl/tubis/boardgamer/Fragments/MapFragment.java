@@ -66,7 +66,7 @@ public class MapFragment extends Fragment {
 
     MapView mMapView;
     private GoogleMap googleMap;
-    Map<String, String> mMarkers;
+    Map<String, String> mMarkers = new HashMap<String, String>();
     static final Integer LOCATION = 0x1;
     GoogleApiClient client;
     LocationRequest mLocationRequest;
@@ -93,8 +93,6 @@ public class MapFragment extends Fragment {
             // ask the user to enable location access
             SimpleLocation.openSettings(getActivity());
         }
-
-
 
         client = new GoogleApiClient.Builder(getActivity())
 //                .addApi(AppIndex.API)
@@ -129,14 +127,14 @@ public class MapFragment extends Fragment {
             public void onClick(View v) {
 
                 if (checkinButton.getText() == "Check out") {
-                    mMarkers = null;
                     googleMap.clear();
+                    mMarkers.clear();
                     locationsRef.child(myUid).setValue(null);
                     checkinButton.setText("Check in");
                 } else {
                     Toast.makeText(getActivity(), myLatitude + " " + myLongitude , Toast.LENGTH_LONG).show();
-                    mMarkers = null;
                     googleMap.clear();
+                    mMarkers.clear();
                     addMarkers(false);
                     NewMarker newMarker = new NewMarker(myLatitude, myLongitude, myUid);
                     locationsRef.child(myUid).setValue(newMarker);
@@ -355,7 +353,6 @@ public class MapFragment extends Fragment {
                     LatLng location = new LatLng(newMarker.getLatitude(), newMarker.getLongitude());
 
                     com.google.android.gms.maps.model.Marker mkr = mMap.addMarker(addNewMarker(location));
-                    mMarkers = new HashMap<String, String>();
                     mMarkers.put(mkr.getId(), newMarker.getUid());
 
                     Log.d("myTag", newMarker.getLatitude().toString());
