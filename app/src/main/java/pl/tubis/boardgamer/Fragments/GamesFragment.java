@@ -10,21 +10,16 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import pl.tubis.boardgamer.Activities.MainActivity;
 import pl.tubis.boardgamer.Model.Game;
-import pl.tubis.boardgamer.Model.NewMarker;
 import pl.tubis.boardgamer.R;
 
 import static pl.tubis.boardgamer.Activities.MainActivity.myUid;
@@ -49,12 +44,9 @@ public class GamesFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_games, container, false);
         View rootView = inflater.inflate(R.layout.game_list, container, false);
 
         downloadGames(rootView);
-
-
 
         return rootView;
     }
@@ -74,7 +66,7 @@ public class GamesFragment extends ListFragment {
                     Log.d("myTag", mGames.toString());
 //                    hideProgressDialog();
 
-                    list = (ListView) rootView.findViewById(R.id.listView1);
+                    list = (ListView) rootView.findViewById(R.id.listView);
                     final String gameTitle = newGame.gameTitle;
                     gameList.add(gameTitle);
 

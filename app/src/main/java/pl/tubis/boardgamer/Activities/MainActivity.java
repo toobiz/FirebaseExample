@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     public DatabaseReference locationsRef = database.getReference("locations");
     public DatabaseReference usersRef = database.getReference("users");
     public DatabaseReference gamesRef = database.getReference("games");
+    public DatabaseReference messagesRef = database.getReference("messages");
 
     private static String TAG = MainActivity.class.getSimpleName();
     public static String myUid;
