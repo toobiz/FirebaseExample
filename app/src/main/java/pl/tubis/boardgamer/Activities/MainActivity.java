@@ -20,6 +20,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import pl.tubis.boardgamer.Fragments.ConversationsFragment;
 import pl.tubis.boardgamer.Fragments.GamesFragment;
 import pl.tubis.boardgamer.Fragments.MapFragment;
@@ -45,6 +48,10 @@ public class MainActivity extends AppCompatActivity {
             mIcon = icon;
         }
     }
+    public FirebaseDatabase database = FirebaseDatabase.getInstance();
+    public DatabaseReference locationsRef = database.getReference("locations");
+    public DatabaseReference usersRef = database.getReference("users");
+    public DatabaseReference gamesRef = database.getReference("games");
 
     private static String TAG = MainActivity.class.getSimpleName();
     public static String myUid;

@@ -59,9 +59,7 @@ public class MapFragment extends Fragment {
     Double myLatitude;
     Double myLongitude;
 
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference locationsRef = database.getReference("locations");
-    DatabaseReference usersRef = database.getReference("users");
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -111,7 +109,7 @@ public class MapFragment extends Fragment {
                 if (checkinButton.getText() == "Check out") {
                     googleMap.clear();
                     mMarkers.clear();
-                    locationsRef.child(myUid).setValue(null);
+                    ((MainActivity)getActivity()).locationsRef.child(myUid).setValue(null);
                     checkinButton.setText("Check in");
                 } else {
                     Toast.makeText(getActivity(), myLatitude + " " + myLongitude , Toast.LENGTH_LONG).show();
@@ -119,7 +117,7 @@ public class MapFragment extends Fragment {
                     mMarkers.clear();
                     addMarkers(false);
                     NewMarker newMarker = new NewMarker(myLatitude, myLongitude, myUid);
-                    locationsRef.child(myUid).setValue(newMarker);
+                    ((MainActivity)getActivity()).locationsRef.child(myUid).setValue(newMarker);
                     checkinButton.setText("Check out");
                 }
 
@@ -331,7 +329,7 @@ public class MapFragment extends Fragment {
     }
 
     private void downloadLocations(final GoogleMap mMap){
-        locationsRef.addValueEventListener(new ValueEventListener() {
+        ((MainActivity)getActivity()).locationsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
@@ -356,7 +354,7 @@ public class MapFragment extends Fragment {
 
 
     private void downloadUserData(final com.google.android.gms.maps.model.Marker marker, final String uid){
-        usersRef.child(uid).addValueEventListener(new ValueEventListener() {
+        ((MainActivity)getActivity()).usersRef.child(uid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
