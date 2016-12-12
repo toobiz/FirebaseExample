@@ -30,10 +30,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import im.delight.android.location.SimpleLocation;
 import pl.tubis.boardgamer.Activities.MainActivity;
+import pl.tubis.boardgamer.Model.Game;
 import pl.tubis.boardgamer.Model.NewMarker;
 import pl.tubis.boardgamer.Model.User;
 import pl.tubis.boardgamer.R;

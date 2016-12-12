@@ -44,31 +44,56 @@ public class Game {
         return gameID;
     }
 
+    public void setGameID(String gameID) {
+        this.gameID = gameID;
+    }
+
     public String getYearPublished() {
         return yearPublished;
+    }
+
+    public void setYearPublished(String yearPublished) {
+        this.yearPublished = yearPublished;
     }
 
     public String getAge() {
         return age;
     }
 
+    public void setAge(String age) {
+        this.age = age;
+    }
+
     public String getPlayingTime() {
         return playingTime;
+    }
+
+    public void setPlayingTime(String playingTime) {
+        this.playingTime = playingTime;
     }
 
     public String getMinPlayers() {
         return minPlayers;
     }
 
-    public String getMaxPLayers() {
+    public void setMinPlayers(String minPlayers) {
+        this.minPlayers = minPlayers;
+    }
+
+    public String getmaxPlayers() {
         return maxPlayers;
     }
 
-    public void setMaxPlayers(String maxPlayers) {
+    public void setmaxPlayers(String maxPlayers) {
         this.maxPlayers = maxPlayers;
     }
 
     public String getThumbnailURL() {
         return thumbnailURL;
     }
+
+    public void setThumbnailURL(String thumbnailURL) {
+        this.thumbnailURL = thumbnailURL;
+    }
+
 }
